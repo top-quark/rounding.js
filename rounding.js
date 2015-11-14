@@ -102,7 +102,7 @@
     // The numeric value of the '0' character
     _zero = '0'.charCodeAt(0),
     // For suppressing -0
-    _likeZero = /^0(?:\.0*)$/,
+    _likeZero = /^0(?:\.0*)?$/,
     // Numerically increments a string
     _incStr = function(s, pos) {
         if (pos >= 0) {
@@ -215,8 +215,8 @@
     window.Rounding = {
         HALF_TO_PLUS_INFINITY : _ralgs.HALF_UP,
         HALF_AWAY_FROM_ZERO : _ralgs.AWAY_FROM_0,
-        HALF_TOWARDS_EVEN : _ralgs.TO_EVEN,
-        // Default rounding method is ROUND_HALF_TOWARDS_EVEN
+        HALF_TO_EVEN : _ralgs.TO_EVEN,
+        // Default rounding method is ROUND_HALF_TO_EVEN
         algorithm : _ralgs.TO_EVEN
     };
     
