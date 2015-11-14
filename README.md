@@ -15,7 +15,7 @@ Unlike <code>toFixed</code>, <code>roundTo</code> handles arbitrarily large and 
 
 rounding.js offers a choice of algorithms. The default is round half to even, but this
 behaviour can be overridden by setting the <code>Rounding.algorithm</code> property:
-<pre>// Default algorithm is Rounding.HALF_TOWARDS_EVEN
+<pre>// Default algorithm is Rounding.HALF_TO_EVEN
 (1.25e-26).roundTo(27); // 0.000000000000000000000000012
 Rounding.algorithm = Rounding.HALF_TO_PLUS_INFINITY
 (1.25e-26).roundTo(27); // 0.000000000000000000000000013</pre>
