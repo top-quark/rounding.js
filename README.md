@@ -25,5 +25,5 @@ output similar to <code>toFixed</code> set the algorithm to <code>Rounding.HALF_
 
 By default, <code>roundTo</code> suppresses trailing zeroes. You can override this with
 a second parameter specifying the minimum number of fractional digits:
-<pre>(1.1).roundTo(2);   // 1.1
+<pre>(1.1).roundTo(2);    // 1.1
 (1.1).roundTo(2, 2); // 1.10</pre>
