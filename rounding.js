@@ -234,6 +234,9 @@
         if (!(isFinite(minFd) && minFd >= 0)) {
             minFd = 0;
         }
+        if (minFd > maxFd) {
+            minFd = maxFd;
+        }
         return _trimFraction(_round(this, maxFd, window.Rounding.algorithm), minFd, maxFd);
     }, mName = "roundTo", obj = window.Number.prototype;
     if (!(mName in obj)) {
