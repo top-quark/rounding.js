@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Christopher Williams">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+        BODY {
+            padding-top: 70px;
+        }
+        .failed {
+            color : red;
+        }
+        .passed {
+            color : green;
+        }
+        .informational {
+            color : blue;
+        }
+        .hdr {
+            display : inline-block;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            padding-bottom: 2px;
+            margin-bottom: 0.5em;
+        }
+        .msie-7 .hdr {
+            border-bottom-width: 0!important;
+            font-weight: bold;
+            margin-top: 1em;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">rounding.js</a>
+            </div>
+        </nav>
+        <div class="container">
+            <pre id="testOutput"></pre>
+        </div>
+        <script type="text/javascript" src="rounding.js"></script>
+        <script type="text/javascript">
+window.onload = function() {
+    "use strict";
+    var msg = "", 
+        p = document.getElementById("testOutput"),
+        eol = "<br>",
+        testVal, passed, passMark, 
+        pM_y = '<span class="passed">(Y)</span> ',
+        pM_n = '<span class="failed">(N)</span> ',
+        pM_i = '<span class="informational">(I)</span> ',
+        testBase, expected, thrown, testInput, fmtStr, p1, p2, p3, before, after,
+        formatHdr = function(text) {
+            msg += '<div class="hdr">' + text + '</div>' + eol;
+        },
+        doTest = function(testDesc, testVal, testCond) {
+            passMark = testCond ? pM_y : pM_n;
+            msg += passMark + testDesc + eol;
+            if (!testCond) {
+                msg += "\tCheck: ";
+                if (typeof(testVal) === "string") {
+                    msg += "'" + testVal + "'";
+                }
+                else {
+                    msg += String(testVal);
+                }
+                msg += eol;
+            }
+        };
+
+    try {        
+        formatHdr('roundTo tests (HALF_TO_EVEN)');
+    
+        Rounding.algorithm = Rounding.HALF_TO_EVEN;
+
+        testVal = Number.NaN.roundTo();
+        expected = "NaN";
+        doTest('Number.NaN.roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testVal = Number.POSITIVE_INFINITY.roundTo();
+        expected = "Infinity";
+        doTest('Number.POSITIVE_INFINITY.roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testVal = Number.NEGATIVE_INFINITY.roundTo();
+        expected = "-Infinity";
+        doTest('Number.NEGATIVE_INFINITY.roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testVal = Math.PI.roundTo();
+        expected = "3";
+        doTest('Math.PI.roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = "2";
+        testVal = Math.PI.roundTo(testInput);
+        expected = "3.14";
+        doTest('Math.PI.roundTo("' + testInput + '") === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = -1;
+        testVal = Math.PI.roundTo(testInput);
+        expected = "3";
+        doTest('Math.PI.roundTo(' + testInput + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testInput = 1;
+        testVal = Math.PI.roundTo(testInput);
+        expected = "3.1";
+        doTest('Math.PI.roundTo(' + testInput + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = 1;
+        p1 = 2;
+        testVal = Math.PI.roundTo(testInput, p1);
+        expected = "3.1";
+        doTest('Math.PI.roundTo(' + testInput + ', ' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testInput = 3;
+        p1 = 0;
+        testVal = (3).roundTo(testInput, p1);
+        expected = "3";
+        doTest('(3).roundTo(' + testInput + ', ' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testInput = 3;
+        p1 = 3;
+        testVal = (3).roundTo(testInput, p1);
+        expected = "3.000";
+        doTest('(3).roundTo(' + testInput + ', ' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = -9999.95;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "-10000";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        p1 = 13;
+        testVal = Math.PI.roundTo(p1);
+        expected = "3.1415926535898";
+        doTest('(Math.PI).roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = 0.5;
+        testVal = testInput.roundTo();
+        expected = "0";
+        doTest('(' + testInput + ').roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testInput = -0.5;
+        testVal = testInput.roundTo();
+        expected = "0";
+        doTest('(' + testInput + ').roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+
+        testInput = -1.5;
+        testVal = testInput.roundTo();
+        expected = "-2";
+        doTest('(' + testInput + ').roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = 2.25;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "2.2";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = -1.25e-21;
+        p1 = 22;
+        testVal = testInput.roundTo(p1);
+        expected = "-0.0000000000000000000012";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        msg += eol;
+    
+        formatHdr('roundTo tests (HALF_TO_PLUS_INFINITY)');
+        
+        Rounding.algorithm = Rounding.HALF_TO_PLUS_INFINITY;
+        
+        testInput = -9999.95;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "-9999.9";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+    
+        testInput = -1.5;
+        testVal = testInput.roundTo();
+        expected = "-1";
+        doTest('(' + testInput + ').roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = 2.25;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "2.3";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = -1.25e-21;
+        p1 = 22;
+        testVal = testInput.roundTo(p1);
+        expected = "-0.0000000000000000000012";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        msg += eol;
+    
+        formatHdr('roundTo tests (HALF_AWAY_FROM_ZERO)');
+        
+        Rounding.algorithm = Rounding.HALF_AWAY_FROM_ZERO;
+    
+        testInput = -9999.95;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "-10000";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+    
+        testInput = -1.5;
+        testVal = testInput.roundTo();
+        expected = "-2";
+        doTest('(' + testInput + ').roundTo() === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = 2.25;
+        p1 = 1;
+        testVal = testInput.roundTo(p1);
+        expected = "2.3";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
+        testInput = -1.25e-21;
+        p1 = 22;
+        testVal = testInput.roundTo(p1);
+        expected = "-0.0000000000000000000013";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+
+        msg += eol;    
+    }
+    catch(e) { msg += e.message + eol; }
+    p.innerHTML = msg;
+};
+        </script>
