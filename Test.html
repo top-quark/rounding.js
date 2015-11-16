@@ -246,6 +246,13 @@ window.onload = function() {
         doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
             testVal, testVal === expected);
         
+        testInput = -0.4;
+        p1 = 0;
+        testVal = testInput.roundTo(p1);
+        expected = "0";
+        doTest('(' + testInput + ').roundTo(' + p1 + ') === "' + expected + '"',
+            testVal, testVal === expected);
+        
         testInput = -1.25e-21;
         p1 = 22;
         testVal = testInput.roundTo(p1);

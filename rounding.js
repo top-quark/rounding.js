@@ -194,7 +194,11 @@
         if (n >= 0) {
             return _round2PlusInfinity(n, fd);
         }
-        return '-' + _round2PlusInfinity(-n, fd);
+        var ret = _round2PlusInfinity(-n, fd);
+        if (!_likeZero.test(ret)) {
+            ret = '-' + ret;
+        }
+        return ret;
     },
     // Rounding function with algorithm specified
     _round = function(n, fd, alg) {
